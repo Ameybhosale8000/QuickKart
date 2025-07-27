@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel-v4';
 
-import { Pagination } from 'react-native-snap-carousel';
+
 import { CarouselData } from '../data/CarouselData';
 
 const { width: screenWidth } = Dimensions.get('window');
