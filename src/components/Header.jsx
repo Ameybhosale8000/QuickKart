@@ -11,7 +11,7 @@ const Header = () => {
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#88dae0', '#98e1d6', '#9ee4d4']}
+        colors={['#b4b4b4ff', '#7a7777ff', '#a4a3a3ff']}
         style={styles.container}>
         <View style={styles.inputBox}>
           <View style={styles.row}>

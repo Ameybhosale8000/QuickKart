@@ -9,6 +9,8 @@ import Deals from '../components/Deals';
 import Brands from '../components/Brands';
 
 
+
+
 const HomeScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -19,6 +21,8 @@ const HomeScreen = () => {
       <Services/>
       <Deals/>
       <Brands/>
+    
+   
       
     </ScrollView>
   );

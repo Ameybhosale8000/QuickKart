@@ -36,11 +36,7 @@ export const Categories = [
     image: Mobiles,
     title: 'Mobiles',
   },
-  {
-    id: 5,
-    image: MiniTV,
-    title: 'miniTV',
-  },
+ 
   {
     id: 6,
     image: Fashion,

@@ -9,7 +9,7 @@ const SubHeader = () => {
     <LinearGradient
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
-      colors={['#bbe8ef', '#bdeee9', '#c3f1e3']}
+      colors={['#ffffffff', '#e6e6e6ff', '#dcdcdcff']}
       style={styles.container}>
       <Feather name="map-pin" size={16} color="#2c4341" />
       <Text style={styles.deliver}>Deliver to Amey Bhosale Patil - Sanvatsar: 423603</Text>

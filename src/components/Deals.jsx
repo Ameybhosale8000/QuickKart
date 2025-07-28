@@ -1,12 +1,20 @@
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native'; // ✅ Import navigation
 import RecommendProduct from '../assets/recommend.jpg';
 
 const Deals = () => {
+  const navigation = useNavigation(); // ✅ Get navigation instance
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recommended deal for you</Text>
-      <Image source={RecommendProduct} style={styles.imgStyle} />
+
+      {/* ✅ Wrap the image in TouchableOpacity */}
+      <TouchableOpacity onPress={() => navigation.navigate('FashWash')}>
+        <Image source={RecommendProduct} style={styles.imgStyle} />
+      </TouchableOpacity>
+
       <View style={styles.bottomSection}>
         <View style={styles.row}>
           <TouchableOpacity style={styles.offDealBtn}>
