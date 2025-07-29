@@ -7,8 +7,10 @@ import FreshScreen from '../components/FreshScreen';
 import DealsScreen from '../components/DealsScreen';
 import BeautyScreen from '../components/BeautyScreen';
 import MobileScreen from '../components/MobileScreen';
-import FashwashScreen from '../components/FashwashScreen';
-import CheckoutScreen from '../screens/CheckOutScreen';
+import FashwashScreen from '../components/FacewashScreen';
+import CheckoutScreen from '../screens/CheckoutScreen';
+import OrderPlacedScreen from '../screens/OrderPlacedScreen';
+
 
 
 const Stack = createStackNavigator();
@@ -27,7 +29,8 @@ const Router = () => {
         <Stack.Screen name="BeautyScreen" component={BeautyScreen} />
         <Stack.Screen name="MobileScreen" component={MobileScreen} />
         <Stack.Screen name="FashWash" component={FashwashScreen} />
-        <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+         <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+          <Stack.Screen name="OrderPlacedScreen" component={OrderPlacedScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

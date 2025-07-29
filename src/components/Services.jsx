@@ -1,9 +1,9 @@
 import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
 import React from 'react';
-import AmazonPay from '../assets/amazon-pay.png';
-import SendMoney from '../assets/send-money.jpg';
-import PayBills from '../assets/pay-bills.jpeg';
-import ScanQR from '../assets/scan-qr.jpeg';
+import AmazonPay from '../assets/pay.png';
+import SendMoney from '../assets/send.png';
+import PayBills from '../assets/bill.png';
+import ScanQR from '../assets/scan.png';
 import {RecentSearchData} from '../data/RecentSearchData';
 
 const Services = () => {
@@ -17,7 +17,7 @@ const Services = () => {
         <View style={styles.row}>
           <View style={styles.innerContainer}>
             <Image style={styles.imgStyle} source={AmazonPay} />
-            <Text style={styles.title}>Amazon Pay</Text>
+            <Text style={styles.title}> Pay</Text>
           </View>
           <View style={styles.innerContainer}>
             <Image style={styles.imgStyle} source={SendMoney} />
