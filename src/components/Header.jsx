@@ -11,7 +11,7 @@ const Header = () => {
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
-        colors={['#000000', '#1c1c1c', '#3a3a3a']}
+        colors={['#000000', '#1c1c1c', '#000000ff']}
         style={styles.container}>
         
         <View style={styles.inputBox}>
@@ -26,7 +26,7 @@ const Header = () => {
           <AntDesign name="scan1" size={22} color="black" />
         </View>
 
-        <Feather name="mic" size={20} color="BLACK" style={styles.micIcon} />
+        <Feather name="mic" size={20} color="white" style={styles.micIcon} />
       </LinearGradient>
     </View>
   );

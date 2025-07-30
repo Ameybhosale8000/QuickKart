@@ -14,6 +14,7 @@ import Brands from '../components/Brands';
 const HomeScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      
       <Header />
       <SubHeader />
       <Category />
