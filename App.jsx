@@ -15,9 +15,9 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // ✅ MUST for parent container
-    backgroundColor: '#fff', // optional but recommended
+    flex: 1, 
+    backgroundColor: '#fff',
   },
 });
 
-export default App;
+export default App;
