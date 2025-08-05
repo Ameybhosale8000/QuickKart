@@ -5,13 +5,42 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureText, setSecureText] = useState(true);
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email.trim(), password)
+      .then(async (userCredential) => {
+        await AsyncStorage.setItem('userEmail', email.trim());
+        Alert.alert('Login Successful');
+        navigation.navigate('HomeScreen'); // Adjust to your main screen
+      })
+      .catch((error) => {
+        let message = 'Login failed. Please try again.';
+        if (error.code === 'auth/user-not-found') {
+          message = 'No user found with this email.';
+        } else if (error.code === 'auth/wrong-password') {
+          message = 'Incorrect password.';
+        } else if (error.code === 'auth/invalid-email') {
+          message = 'Invalid email address.';
+        }
+        Alert.alert('Login Failed', message);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -19,12 +48,12 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.logo}>QuickKart</Text>
         <Text style={styles.subTitle}>Welcome back!</Text>
 
-        <Text style={styles.EmailPassword}>Email</Text>
-        <View style={styles.inputWrapper}>
-          <Icon name="envelope" size={18} color="#6B7280" style={styles.inputIcon} />
+        <Text style={styles.label}>Email</Text>
+        <View style={styles.inputGroup}>
+          <Icon name="envelope" size={18} color="#6B7280" style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Enter Your Email"
+            placeholder="Enter your email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -33,51 +62,31 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
 
-        <Text style={styles.EmailPassword}>Password</Text>
-        <View style={styles.inputWrapper}>
-          <Icon name="lock" size={20} color="#6B7280" style={styles.inputIcon} />
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.inputGroup}>
+          <Icon name="lock" size={20} color="#6B7280" style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Enter Your Password"
+            placeholder="Enter your password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry={secureText}
             autoCapitalize="none"
             placeholderTextColor="#9CA3AF"
           />
-          <TouchableOpacity
-            onPress={() => setSecureText(!secureText)}
-            style={styles.eyeIcon}
-          >
+          <TouchableOpacity onPress={() => setSecureText(!secureText)} style={styles.eyeIcon}>
             <Icon name={secureText ? 'eye-slash' : 'eye'} size={18} color="#6B7280" />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.continueButton}onPress={() => navigation.navigate('HomeScreen')}>
-          <Text style={styles.continueText}>Continue</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
 
-        <View style={styles.separatorContainer}>
-          <View style={styles.separator} />
-          <Text style={styles.orText}>or</Text>
-          <View style={styles.separator} />
-        </View>
-
-        <TouchableOpacity style={styles.socialButton}>
-          <Icon name="google" size={18} color="#DB4437" style={styles.icon} />
-          <Text style={styles.socialText}>Continue with Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.socialButton}>
-          <Icon name="apple" size={20} color="#000" style={styles.icon} />
-          <Text style={styles.socialText}>Continue with Apple</Text>
-        </TouchableOpacity>
-
-        
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ color: 'grey', fontFamily: 'Poppins-Regular' }}>Not have an account? </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
+          <Text style={{ color: 'grey' }}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('SignupScreen')}>
-            <Text style={{ fontFamily: 'Poppins-Bold', color: '#111827' }}>Sign up</Text>
+            <Text style={{ color: '#111827', fontWeight: 'bold' }}>Sign up</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -86,106 +95,36 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    padding: 24,
-    elevation: 6,
-  },
-  logo: {
-    fontSize: 40,
-    color: '#111',
-    marginBottom: -10,
-    fontFamily: 'Poppins-Bold',
-  },
-  subTitle: {
-    fontSize: 30,
-    color: '#374151',
-    marginBottom: 1,
-    fontFamily: 'Poppins-Bold',
-  },
-  EmailPassword: {
-    fontSize: 14,
-    color: '#111827',
-    marginBottom: 4,
-    fontFamily: 'Poppins-Bold',
-  },
-  inputWrapper: {
+  container: { flex: 1, backgroundColor: '#F3F4F6', justifyContent: 'center', padding: 20 },
+  card: { backgroundColor: '#fff', borderRadius: 25, padding: 24, elevation: 6 },
+  logo: { fontSize: 40, color: '#111', marginBottom: 8, fontWeight: 'bold' },
+  subTitle: { fontSize: 24, color: '#374151', marginBottom: 20 },
+  label: { fontSize: 14, color: '#111827', marginBottom: 6 },
+  inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#D1D5DB',
-    borderRadius: 8,
+    borderRadius: 10,
     paddingHorizontal: 12,
     backgroundColor: '#fff',
     marginBottom: 16,
   },
-  eyeIcon: {
-    padding: 10,
-  },
+  icon: { marginRight: 10 },
+  eyeIcon: { padding: 6 },
   input: {
     flex: 1,
     height: 48,
     fontSize: 14,
-    color: '#111',
-    fontFamily: 'Poppins-Bold',
-    marginBottom: -5,
-  },
-  continueButton: {
-    backgroundColor: '#111827',
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  continueText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'Poppins-Bold',
-  },
-  separatorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E5E7EB',
-  },
-  orText: {
-    marginHorizontal: 10,
-    color: '#6B7280',
-    fontWeight: '500',
-    fontFamily: 'Poppins-Bold',
-  },
-  socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9FAFB',
-    paddingVertical: 10,
-    borderRadius: 8,
-    paddingHorizontal: 20,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  icon: {
-    marginRight: 12,
-  },
-  socialText: {
-    fontSize: 16,
     color: '#111827',
-    fontWeight: '500',
-    fontFamily: 'Poppins-Bold',
-    marginBottom: -5,
   },
+  button: {
+    backgroundColor: '#111827',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
 
-export default LoginScreen;
+export default LoginScreen;

@@ -7,16 +7,20 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  ToastAndroid,
 } from 'react-native';
 import { database } from '../../firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
+import { useCart } from '../../CartContext';
+import { getImage } from '../utils/getImage'; // ✅ Uses shared utility
 
 const screenWidth = Dimensions.get('window').width;
 
 const MobileScreen = () => {
   const [mobiles, setMobiles] = useState([]);
   const navigation = useNavigation();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const mobilesRef = ref(database, 'mobiles');
@@ -32,33 +36,10 @@ const MobileScreen = () => {
     });
   }, []);
 
-  const getImage = (imageName) => {
-    switch (imageName) {
-      case 'Samsung.png':
-        return require('../assets/Samsung.png');
-      case 'Iphone16.png':
-        return require('../assets/Iphone16.png');
-      case 'Acer.png':
-        return require('../assets/Acer.png');
-      case 'Redmi.png':
-        return require('../assets/Redmi.png');
-      case 'nothing.png':
-        return require('../assets/nothing.png');
-      case 'Oneplus.png':
-        return require('../assets/Oneplus.png');
-      case 'Motorola.png':
-        return require('../assets/Motorola.png');
-      case 'Tecno.png':
-        return require('../assets/Tecno.png');
-      default:
-        return null;
-    }
-  };
-
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Image
-        source={getImage(item.image)}
+        source={getImage(item.image)} // ✅ Dynamic image loading
         style={styles.image}
         resizeMode="contain"
       />
@@ -68,9 +49,16 @@ const MobileScreen = () => {
         <Text style={styles.rating}>⭐ {item.rating} Ratings</Text>
 
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.cartButton}>
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => {
+              addToCart(item);
+              ToastAndroid.show(`${item.name} added to cart!`, ToastAndroid.SHORT);
+            }}
+          >
             <Text style={styles.buttonTextWhite}>Add to Cart</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.buyButton}
             onPress={() => navigation.navigate('CheckoutScreen', { product: item })}
@@ -86,7 +74,7 @@ const MobileScreen = () => {
     <FlatList
       data={mobiles}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
     />
