@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,40 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { useCart } from '../../CartContext';
-import { getImage } from '../utils/getImage'; // ✅ shared image loader
+import { getImage } from '../utils/getImage';
+import { database, auth } from '../../firebaseConfig';
+import { ref, onValue } from 'firebase/database';
 
 const screenWidth = Dimensions.get('window').width;
 
 const CartScreen = () => {
-  const { cartItems } = useCart();
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      const cartRef = ref(database, `users/${user.uid}/cart`);
+      const unsubscribe = onValue(cartRef, snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          const itemsArray = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key],
+          }));
+          setCartItems(itemsArray);
+        } else {
+          setCartItems([]);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.cartItem}>
       <Image
-        source={getImage(item.image)} // ✅ dynamic image
+        source={getImage(item.image)}
         style={styles.productImage}
         resizeMode="contain"
       />
