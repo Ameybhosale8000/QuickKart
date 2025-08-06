@@ -1,3 +1,4 @@
+// screens/CheckoutScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -8,13 +9,14 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { ref, push } from 'firebase/database';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { ref, push, set } from 'firebase/database';
 import { database, auth } from '../../firebaseConfig';
 
 const CheckoutScreen = () => {
   const route = useRoute();
-  const { product } = route.params;
+  const navigation = useNavigation();
+  const { product } = route.params || {};
 
   const [fullName, setFullName] = useState('');
   const [mobile, setMobile] = useState('');
@@ -22,12 +24,18 @@ const CheckoutScreen = () => {
   const [area, setArea] = useState('');
   const [alternateMobile, setAlternateMobile] = useState('');
   const [addressType, setAddressType] = useState('Home');
+  const [loading, setLoading] = useState(false);
+
+  const validate = () => {
+    if (!fullName?.trim() || !mobile?.trim() || !house?.trim() || !area?.trim()) {
+      Alert.alert('Please fill all required fields.');
+      return false;
+    }
+    return true;
+  };
 
   const handlePlaceOrder = async () => {
-    if (!fullName || !mobile || !house || !area) {
-      Alert.alert('Please fill all required fields.');
-      return;
-    }
+    if (!validate()) return;
 
     const user = auth.currentUser;
     if (!user) {
@@ -35,27 +43,54 @@ const CheckoutScreen = () => {
       return;
     }
 
-    try {
-      const ordersRef = ref(database, `users/${user.uid}/orders`);
-      await push(ordersRef, {
-        productName: product.name,
-        price: product.price,
-        quantity: 1,
-        timestamp: new Date().toISOString(),
-        address: {
-          fullName,
-          house,
-          area,
-          mobile,
-          alternateMobile,
-          type: addressType,
-        },
-      });
+    if (!product || !product.id) {
+      Alert.alert('Product error', 'No product selected for ordering.');
+      return;
+    }
 
-      Alert.alert('Success', 'Your order has been placed successfully.');
+    setLoading(true);
+
+    const orderPayload = {
+      productId: product.id || '',
+      name: product.name || '',
+      price: Number(product.price) || 0,
+      quantity: 1,
+      image: product.image || '', // filename expected by getImage util
+      address: {
+        fullName,
+        house,
+        area,
+        mobile,
+        alternateMobile,
+        type: addressType,
+      },
+      total: Number(product.price) || 0,
+      date: new Date().toISOString(),
+      status: 'Ordered',
+    };
+
+    try {
+      // 1) Save under user's orders
+      const userOrdersRef = ref(database, `users/${user.uid}/orders`);
+      const newUserOrderRef = push(userOrdersRef);
+      await set(newUserOrderRef, orderPayload);
+
+      // 2) Save under global orders with uid
+      const globalOrdersRef = ref(database, 'orders');
+      const newGlobalOrderRef = push(globalOrdersRef);
+      await set(newGlobalOrderRef, { uid: user.uid, ...orderPayload });
+
+      setLoading(false);
+      Alert.alert('Success', 'Your order has been placed successfully.', [
+        {
+          text: 'OK',
+          onPress: () => navigation.replace('OrderPlacedScreen'), // or navigation.navigate(...)
+        },
+      ]);
     } catch (error) {
       console.error('Order placement error:', error);
-      Alert.alert('Error', 'Failed to place order.');
+      setLoading(false);
+      Alert.alert('Error', 'Failed to place order. Please try again.');
     }
   };
 
@@ -119,8 +154,12 @@ const CheckoutScreen = () => {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handlePlaceOrder}>
-        <Text style={styles.buttonText}>Place Order</Text>
+      <TouchableOpacity
+        style={[styles.button, loading && { opacity: 0.7 }]}
+        onPress={handlePlaceOrder}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>{loading ? 'Placing Order...' : 'Place Order'}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -165,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   selectedType: {
-    backgroundColor: '#1a73e8',
+    backgroundColor: '#000',
   },
   addressTypeText: {
     color: '#000',
@@ -175,7 +214,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   button: {
-    backgroundColor: '#1a73e8',
+    backgroundColor: '#000000ff',
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',

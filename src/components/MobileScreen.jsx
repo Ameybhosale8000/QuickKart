@@ -24,7 +24,7 @@ const MobileScreen = () => {
 
   useEffect(() => {
     const mobilesRef = ref(database, 'mobiles');
-    onValue(mobilesRef, snapshot => {
+    const unsubscribe = onValue(mobilesRef, snapshot => {
       const data = snapshot.val();
       if (data) {
         const items = Object.keys(data).map(key => ({
@@ -32,21 +32,31 @@ const MobileScreen = () => {
           ...data[key],
         }));
         setMobiles(items);
+      } else {
+        setMobiles([]);
       }
     });
+
+    return () => unsubscribe();
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.card}
+      onPress={() => navigation.navigate('ProductDetails', { product: item })}
+    >
       <Image
         source={getImage(item.image)} // ✅ Dynamic image loading
         style={styles.image}
         resizeMode="contain"
       />
       <View style={styles.info}>
-        <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
-        <Text style={styles.price}>₹{item.price}</Text>
-        <Text style={styles.rating}>⭐ {item.rating} Ratings</Text>
+        <View>
+          <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+          <Text style={styles.price}>₹{item.price}</Text>
+          <Text style={styles.rating}>⭐ {item.rating} Ratings</Text>
+        </View>
 
         <View style={styles.buttons}>
           <TouchableOpacity
@@ -67,7 +77,7 @@ const MobileScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -97,6 +107,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
+    // Ensure inner touches still work:
+    alignItems: 'center',
   },
   image: {
     width: screenWidth * 0.3,

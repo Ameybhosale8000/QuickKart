@@ -67,6 +67,7 @@ const AccountScreen = () => {
     Alert.alert('Coming Soon', 'This feature is under development.');
   };
 
+  // Render item helper — now accepts onPress
   const renderItem = (icon, label, onPress = showComingSoon) => (
     <TouchableOpacity
       style={styles.item}
@@ -130,8 +131,9 @@ const AccountScreen = () => {
 
         {/* Sections */}
         <View style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>Your Orders</Text>
-          {renderItem('inventory', 'Track Orders')}
+          <Text style={styles.sectionTitle}>Your Orders</Text> 
+          {/* <-- Updated: navigate to OrderDetails screen */}
+          {renderItem('inventory', 'Track Orders', () => navigation.navigate('OrderDetails'))}
           {renderItem('autorenew', 'Returns & Refunds')}
           {renderItem('shopping-cart', 'Buy Again')}
         </View>
