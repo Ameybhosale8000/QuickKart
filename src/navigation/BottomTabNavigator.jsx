@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 
 // Import your screens
 import HomeScreen from '../screens/HomeScreen';
-import PlayScreen from '../Bottom/PlayScreen';
+
 import CategoriesScreen from '../Bottom/CategoriesScreen';
 import AccountScreen from '../Bottom/AccountScreen';
 import CartScreen from '../Bottom/CartScreen ';
@@ -33,9 +33,7 @@ const BottomTabNavigator = () => {
             case 'Home':
               iconName = focused ? 'home' : 'home-outline';
               break;
-            case 'Play':
-              iconName = focused ? 'play-circle' : 'play-circle-outline';
-              break;
+           
             case 'Categories':
               iconName = focused ? 'grid' : 'grid-outline';
               break;
@@ -74,7 +72,7 @@ const BottomTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Play" component={PlayScreen} />
+      
       <Tab.Screen name="Categories" component={CategoriesScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />

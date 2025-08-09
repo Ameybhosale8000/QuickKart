@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const PlayScreen = () => {
+const toy = () => {
   return (
     <View>
-      <Text>PlayScreen</Text>
+      <Text>toy</Text>
     </View>
   )
 }
 
-export default PlayScreen
+export default toy

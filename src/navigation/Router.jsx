@@ -17,6 +17,14 @@ import OrderPlacedScreen from '../screens/OrderPlacedScreen';
 import BottomTabNavigator from '../navigation/BottomTabNavigator';
 import ProductDetails from '../screens/ProductDetails';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
+import book from '../categoriedata/book';
+import footwear from '../categoriedata/footwear';
+import grocery from '../categoriedata/grocery';
+import haircare from '../categoriedata/haircare';
+import makeup from '../categoriedata/makeup';
+import sports from '../categoriedata/sports';
+import toy from '../categoriedata/toy';
+import watch from '../categoriedata/watch';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +48,19 @@ const Router = () => {
           <Stack.Screen name="OrderPlacedScreen" component={OrderPlacedScreen} />
           <Stack.Screen name="ProductDetails" component={ProductDetails} />
           <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
+          <Stack.Screen name="book" component={book} />
+          <Stack.Screen name="footwear" component={footwear} />
+          <Stack.Screen name="grocery" component={grocery} />
+          <Stack.Screen name="hair" component={haircare} />
+          <Stack.Screen name="makeup" component={makeup} />
+          <Stack.Screen name="sports" component={sports} />
+          <Stack.Screen name="toy" component={toy} />
+          <Stack.Screen name="watch" component={watch} />
+
+
+
+
+
         </Stack.Navigator>
       </NavigationContainer>
     </CartProvider>

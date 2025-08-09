@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { database, auth } from '../../firebaseConfig';
 import { ref, onValue } from 'firebase/database';
-import { getImage } from '../utils/getImage'; // adjust path if needed
+import getImage, { getImage as namedGetImage } from '../utils/getImage'; // both import styles supported
 
 export default function OrderDetailsScreen() {
   const [orders, setOrders] = useState([]);
@@ -56,14 +56,10 @@ export default function OrderDetailsScreen() {
     </View>
   );
 
-  // Helper to render address safely
+  // safely format address
   const formatAddress = (address) => {
     if (!address) return null;
-
-    // If address is already a string (older entries), return it
     if (typeof address === 'string') return address;
-
-    // If it's an object, pick fields and build a readable string
     const parts = [];
     if (address.fullName) parts.push(address.fullName);
     if (address.house) parts.push(address.house);
@@ -71,12 +67,14 @@ export default function OrderDetailsScreen() {
     if (address.type) parts.push(`(${address.type})`);
     if (address.mobile) parts.push(`Mob: ${address.mobile}`);
     if (address.alternateMobile) parts.push(`Alt: ${address.alternateMobile}`);
-
     return parts.join(', ');
   };
 
   const renderOrder = ({ item }) => {
     const addressStr = formatAddress(item.address);
+
+    // resolve getImage (support both named/default import)
+    
 
     return (
       <View style={styles.card}>

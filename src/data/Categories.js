@@ -42,11 +42,7 @@ export const Categories = [
     image: Fashion,
     title: 'Fashion',
   },
-  {
-    id: 7,
-    image: Prime,
-    title: 'Prime',
-  },
+  
   {
     id: 8,
     image: Electronics,
@@ -87,9 +83,5 @@ export const Categories = [
     image: HomeAppliances,
     title: 'Appliances',
   },
-  {
-    id: 16,
-    image: More,
-    title: 'More',
-  },
+ 
 ];
