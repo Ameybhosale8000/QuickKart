@@ -25,6 +25,7 @@ import makeup from '../categoriedata/makeup';
 import sports from '../categoriedata/sports';
 import toy from '../categoriedata/toy';
 import watch from '../categoriedata/watch';
+import FashionScreen from '../components/fashion';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ const Router = () => {
           <Stack.Screen name="sports" component={sports} />
           <Stack.Screen name="toy" component={toy} />
           <Stack.Screen name="watch" component={watch} />
+             <Stack.Screen name="fashion" component={FashionScreen} />
 
 
 

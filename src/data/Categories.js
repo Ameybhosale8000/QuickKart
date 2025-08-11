@@ -11,7 +11,7 @@ import Travel from '../assets/travel.jpeg';
 import Furniture from '../assets/furniture.png';
 import Pharmacy from '../assets/pharmacy.jpeg';
 import Movies from '../assets/movies.png';
-import Books from '../assets/books.jpeg';
+
 import HomeAppliances from '../assets/home-appliances.png';
 import More from '../assets/more.png';
 
@@ -48,40 +48,5 @@ export const Categories = [
     image: Electronics,
     title: 'Electronics',
   },
-  {
-    id: 9,
-    image: Home,
-    title: 'Home',
-  },
-  {
-    id: 10,
-    image: Travel,
-    title: 'Travel',
-  },
-  {
-    id: 11,
-    image: Furniture,
-    title: 'Furniture',
-  },
-  {
-    id: 12,
-    image: Pharmacy,
-    title: 'Pharmacy',
-  },
-  {
-    id: 13,
-    image: Movies,
-    title: 'Movies',
-  },
-  {
-    id: 14,
-    image: Books,
-    title: 'Books, Toys',
-  },
-  {
-    id: 15,
-    image: HomeAppliances,
-    title: 'Appliances',
-  },
- 
+  
 ];

@@ -17,8 +17,7 @@ const ITEM_WIDTH = (width / 2) - 24;
 // 🔄 Local image mapping
 const categoryImages = {
   "makeup.jpg": require('../assets/makeup.jpg'),
-  "book.jpg": require('../assets/books.jpg'),
-  "books.jpg": require('../assets/books.jpg'),
+ 
   "toys.jpg": require('../assets/toys.jpg'),
   "grocery.jpg": require('../assets/grocery.jpg'),
   "footwear.jpg": require('../assets/footwear.jpg'),

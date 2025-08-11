@@ -24,8 +24,9 @@ const Category = () => {
             case 'mobiles':
                 navigation.navigate('MobileScreen');
                 break;
-            // Add more cases as needed
-
+           case 'fashion':
+                navigation.navigate('fashion');
+                break;
         }
     };
 
