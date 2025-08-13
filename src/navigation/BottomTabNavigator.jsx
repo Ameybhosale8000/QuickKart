@@ -3,20 +3,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, Text } from 'react-native';
 
-// Import your screens
+// ✅ Correct imports (no trailing spaces in paths)
 import HomeScreen from '../screens/HomeScreen';
-
 import CategoriesScreen from '../Bottom/CategoriesScreen';
 import AccountScreen from '../Bottom/AccountScreen';
 import CartScreen from '../Bottom/CartScreen ';
+import SearchScreen from '../Bottom/SearchScreen'; // ✅ Search screen
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator  
+    <Tab.Navigator
       screenOptions={({ route }) => ({
-         headerShown: false,
+        headerShown: false,
         tabBarShowLabel: true,
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
@@ -26,16 +26,17 @@ const BottomTabNavigator = () => {
           borderTopWidth: 0.5,
           borderTopColor: '#ccc',
         },
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, color }) => {
           let iconName;
-
           switch (route.name) {
             case 'Home':
               iconName = focused ? 'home' : 'home-outline';
               break;
-           
             case 'Categories':
               iconName = focused ? 'grid' : 'grid-outline';
+              break;
+            case 'Search':
+              iconName = focused ? 'search' : 'search-outline';
               break;
             case 'Account':
               iconName = focused ? 'person' : 'person-outline';
@@ -72,8 +73,8 @@ const BottomTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      
       <Tab.Screen name="Categories" component={CategoriesScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
     </Tab.Navigator>

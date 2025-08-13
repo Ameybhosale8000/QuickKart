@@ -1,45 +1,72 @@
-import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native'; // navigation hook
 import AmazonPay from '../assets/pay.png';
 import SendMoney from '../assets/send.png';
 import PayBills from '../assets/bill.png';
 import ScanQR from '../assets/scan.png';
-import {RecentSearchData} from '../data/RecentSearchData';
+import { RecentSearchData } from '../data/RecentSearchData';
 
 const Services = () => {
+  const navigation = useNavigation(); // navigation object
+
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.container}
-      contentContainerStyle={{paddingRight: 20}}>
+      contentContainerStyle={{ paddingRight: 20 }}>
+      
+      {/* First Block */}
       <View style={styles.serviceContainer}>
         <View style={styles.row}>
-          <View style={styles.innerContainer}>
+          {/* Pay Tab */}
+          <TouchableOpacity 
+            style={styles.innerContainer} 
+            onPress={() => navigation.navigate("Pay")} // navigate to PayScreen
+          >
             <Image style={styles.imgStyle} source={AmazonPay} />
-            <Text style={styles.title}> Pay</Text>
-          </View>
-          <View style={styles.innerContainer}>
+            <Text style={styles.title}>Pay</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.innerContainer} 
+            onPress={() => console.log("Send Money clicked")}
+          >
             <Image style={styles.imgStyle} source={SendMoney} />
             <Text style={styles.title}>Send Money</Text>
-          </View>
+          </TouchableOpacity>
         </View>
+
         <View style={styles.row}>
-          <View style={styles.innerContainer}>
+          <TouchableOpacity 
+            style={styles.innerContainer} 
+            onPress={() => console.log("Scan QR clicked")}
+          >
             <Image style={styles.imgStyle} source={ScanQR} />
             <Text style={styles.title}>Scan QR</Text>
-          </View>
-          <View style={styles.innerContainer}>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.innerContainer} 
+            onPress={() => console.log("Pay Bills clicked")}
+          >
             <Image style={styles.imgStyle} source={PayBills} />
             <Text style={styles.title}>Pay Bills</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
+
+      {/* Recent Search Block */}
       {RecentSearchData.map(item => (
-        <View key={item.id} style={styles.outerContainer}>
+        <TouchableOpacity 
+          key={item.id} 
+          style={styles.outerContainer} 
+          onPress={() => console.log(item.title + " clicked")}
+        >
           <Text style={styles.recentSearch}>{item.title}</Text>
           <Image source={item.image} style={styles.serviceImg} />
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );

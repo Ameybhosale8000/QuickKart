@@ -5,12 +5,10 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { database, auth } from '../../firebaseConfig';
 import { ref, onValue } from 'firebase/database';
-import getImage, { getImage as namedGetImage } from '../utils/getImage'; // both import styles supported
 
 export default function OrderDetailsScreen() {
   const [orders, setOrders] = useState([]);
@@ -56,7 +54,6 @@ export default function OrderDetailsScreen() {
     </View>
   );
 
-  // safely format address
   const formatAddress = (address) => {
     if (!address) return null;
     if (typeof address === 'string') return address;
@@ -73,12 +70,8 @@ export default function OrderDetailsScreen() {
   const renderOrder = ({ item }) => {
     const addressStr = formatAddress(item.address);
 
-    // resolve getImage (support both named/default import)
-    
-
     return (
       <View style={styles.card}>
-        
         <View style={styles.info}>
           <Text style={styles.name} numberOfLines={2}>
             {item.name || item.productName || 'Product'}
@@ -89,16 +82,29 @@ export default function OrderDetailsScreen() {
           <Text style={styles.qty}>Qty: {item.quantity || item.qty || 1}</Text>
 
           {addressStr ? (
-            <Text style={styles.address}>Address: {addressStr}</Text>
+            <Text style={styles.address}>📍 {addressStr}</Text>
           ) : null}
 
           {item.date ? (
             <Text style={styles.date}>
-              Ordered: {new Date(item.date).toLocaleString()}
+              🗓 {new Date(item.date).toLocaleString()}
             </Text>
           ) : null}
 
-          {item.status ? <Text style={styles.status}>Status: {item.status}</Text> : null}
+          {item.status ? (
+            <Text
+              style={[
+                styles.status,
+                item.status.toLowerCase().includes('delivered')
+                  ? styles.statusDelivered
+                  : item.status.toLowerCase().includes('cancel')
+                  ? styles.statusCancelled
+                  : styles.statusPending,
+              ]}
+            >
+              {item.status}
+            </Text>
+          ) : null}
         </View>
       </View>
     );
@@ -107,7 +113,7 @@ export default function OrderDetailsScreen() {
   if (loading) {
     return (
       <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <ActivityIndicator size="large" color="#000" />
+        <ActivityIndicator size="large" color="#2874F0" />
       </View>
     );
   }
@@ -129,26 +135,39 @@ export default function OrderDetailsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#F1F3F6' },
+
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { fontSize: 18, color: '#555' },
+  emptyText: { fontSize: 18, color: '#555', fontWeight: '500' },
 
   card: {
-    flexDirection: 'row',
     backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 12,
+    borderRadius: 8,
+    padding: 14,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#000',
-    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
-  image: { width: 90, height: 90, backgroundColor: '#f7f7f7', borderRadius: 8 },
-  info: { flex: 1, marginLeft: 12 },
-  name: { fontSize: 16, fontWeight: '700', color: '#000' },
-  price: { fontSize: 15, fontWeight: '700', color: '#000', marginTop: 6 },
-  qty: { fontSize: 14, color: '#000', marginTop: 6 },
+  info: { flex: 1 },
+  name: { fontSize: 15, fontWeight: '600', color: '#212121' },
+  price: { fontSize: 16, fontWeight: '700', color: '#B12704', marginTop: 4 },
+  qty: { fontSize: 14, color: '#565959', marginTop: 4 },
   address: { fontSize: 13, color: '#333', marginTop: 6 },
   date: { fontSize: 12, color: '#555', marginTop: 4 },
-  status: { fontSize: 13, color: '#000', marginTop: 6, fontWeight: '600' },
+
+  status: {
+    fontSize: 13,
+    fontWeight: '600',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+  },
+  statusDelivered: { backgroundColor: '#D4EDDA', color: '#155724' },
+  statusCancelled: { backgroundColor: '#F8D7DA', color: '#721C24' },
+  statusPending: { backgroundColor: '#FFF3CD', color: '#856404' },
 });
