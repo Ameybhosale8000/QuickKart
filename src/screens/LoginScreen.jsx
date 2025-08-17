@@ -48,12 +48,12 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.logo}>QuickKart</Text>
         <Text style={styles.subTitle}>Welcome back!</Text>
 
-        <Text style={styles.label}>Email</Text>
+
         <View style={styles.inputGroup}>
           <Icon name="envelope" size={18} color="#6B7280" style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Enter your email"
+            placeholder="Email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -62,12 +62,12 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
 
-        <Text style={styles.label}>Password</Text>
+
         <View style={styles.inputGroup}>
           <Icon name="lock" size={20} color="#6B7280" style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Enter your password"
+            placeholder="Password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry={secureText}
@@ -78,6 +78,13 @@ const LoginScreen = ({ navigation }) => {
             <Icon name={secureText ? 'eye-slash' : 'eye'} size={18} color="#6B7280" />
           </TouchableOpacity>
         </View>
+
+        {/* Forgot Password link */}
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text style={{ color: '#111827', textAlign: 'right', marginBottom: 16 }}>
+            Forgot Password?
+          </Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Continue</Text>
@@ -99,8 +106,7 @@ const styles = StyleSheet.create({
   card: { backgroundColor: '#fff', borderRadius: 25, padding: 24, elevation: 6 },
   logo: { fontSize: 40, color: '#111', marginBottom: 8, fontWeight: 'bold' },
   subTitle: { fontSize: 24, color: '#374151', marginBottom: 20 },
-  label: { fontSize: 14, color: '#111827', marginBottom: 6 },
-  inputGroup: {
+inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,

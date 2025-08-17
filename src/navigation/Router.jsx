@@ -17,6 +17,7 @@ import OrderPlacedScreen from '../screens/OrderPlacedScreen';
 import BottomTabNavigator from '../navigation/BottomTabNavigator';
 import ProductDetails from '../screens/ProductDetails';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import book from '../categoriedata/book';
 import footwear from '../categoriedata/footwear';
 import grocery from '../categoriedata/grocery';
@@ -38,7 +39,7 @@ const Router = () => {
   return (
     <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} />
           <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
@@ -64,9 +65,9 @@ const Router = () => {
           <Stack.Screen name="watch" component={watch} />
           <Stack.Screen name="fashion" component={FashionScreen} />
           <Stack.Screen name="Pay" component={Pay} />
-     <Stack.Screen name="brand" component={Brands} />
-      <Stack.Screen name="Search" component={SearchScreen} />
-
+          <Stack.Screen name="brand" component={Brands} />
+          <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
 
 
 
