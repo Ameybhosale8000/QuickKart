@@ -20,13 +20,10 @@ const categoryImages = {
  
   "toys.jpg": require('../assets/toys.jpg'),
   "grocery.jpg": require('../assets/grocery.jpg'),
-  "footwear.jpg": require('../assets/footwear.jpg'),
+ 
   "sports.jpg": require('../assets/sports.jpg'),
-  "watch.jpg": require('../assets/watch.jpg'),
-  "skin.jpg": require('../assets/skincare.jpg'),
-  "hair.jpg": require('../assets/hair.jpg'),
-  "sent.jpg": require('../assets/sent.jpg'),
-  "tool.jpg": require('../assets/tools.jpg'),
+ 
+
   "electronic.jpg": require('../assets/electronic.jpg'),
   "electronics.jpg": require('../assets/electronics.jpeg'),
   "phone.jpg": require('../assets/phone.jpg'),
@@ -40,8 +37,7 @@ const screenMap = {
   "Toys": "toy",
   "Grocery": "grocery",
   "Footwear": "footwear",
-  "Sports": "sports",
-  "Watches": "watch",
+
   "skincare": "skincare",
   "hair": "haircare",
   "sent": "sent",

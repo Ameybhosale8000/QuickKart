@@ -39,7 +39,7 @@ const HomeScreen = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Header onSearch={handleSearch} /> {/* Pass search handler to Header */}
+      
       <SubHeader />
       <Category />
       <Carousel />

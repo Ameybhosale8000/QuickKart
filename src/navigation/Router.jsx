@@ -19,13 +19,13 @@ import ProductDetails from '../screens/ProductDetails';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import book from '../categoriedata/book';
-import footwear from '../categoriedata/footwear';
+
 import grocery from '../categoriedata/grocery';
-import haircare from '../categoriedata/haircare';
+
 import makeup from '../categoriedata/makeup';
-import sports from '../categoriedata/sports';
+
 import toy from '../categoriedata/toy';
-import watch from '../categoriedata/watch';
+
 import FashionScreen from '../components/fashion';
 
 import Pay from '../screens/PayScreen';
@@ -39,7 +39,7 @@ const Router = () => {
   return (
     <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} />
           <Stack.Screen name="HomeScreen" component={BottomTabNavigator} />
@@ -56,13 +56,13 @@ const Router = () => {
           <Stack.Screen name="ProductDetails" component={ProductDetails} />
           <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
           <Stack.Screen name="book" component={book} />
-          <Stack.Screen name="footwear" component={footwear} />
+          
           <Stack.Screen name="grocery" component={grocery} />
-          <Stack.Screen name="hair" component={haircare} />
+         
           <Stack.Screen name="makeup" component={makeup} />
-          <Stack.Screen name="sports" component={sports} />
+         
           <Stack.Screen name="toy" component={toy} />
-          <Stack.Screen name="watch" component={watch} />
+          
           <Stack.Screen name="fashion" component={FashionScreen} />
           <Stack.Screen name="Pay" component={Pay} />
           <Stack.Screen name="brand" component={Brands} />

@@ -1,145 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
-import { database } from '../../firebaseConfig';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { ref, onValue } from 'firebase/database';
+import { database } from '../../firebaseConfig';
 import { getImage } from '../utils/getImage';
-import { useCart } from '../../CartContext';
 
-const FashionScreen = ({ navigation }) => {
-  const [products, setProducts] = useState([]);
-  const { addToCart } = useCart();
+const FashionScreen = () => {
+  const [fashionItems, setFashionItems] = useState([]);
 
   useEffect(() => {
-    const fashionRootRef = ref(database, 'fashion');
-
-    onValue(fashionRootRef, (snapshot) => {
-      const rootData = snapshot.val();
-      if (rootData) {
-        const autoIdKey = Object.keys(rootData)[0];
-
-        if (autoIdKey && rootData[autoIdKey]?.fashion) {
-          const data = rootData[autoIdKey].fashion;
-
-          const productsArray = Object.entries(data).map(([key, value]) => ({
-            id: key,
-            ...value
-          }));
-
-          setProducts(productsArray);
-        }
+    const fashionRef = ref(database, 'fashion'); // Firebase path
+    onValue(fashionRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const itemsArray = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        setFashionItems(itemsArray);
       }
     });
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate('ProductDetails', { product: item })}
-      activeOpacity={0.8}
-    >
-      {item.image && (
-        <Image source={getImage(item.image)} style={styles.image} />
-      )}
-      <View style={styles.details}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.price}>₹{item.price}</Text>
-        <Text style={styles.rating}>⭐ {item.rating} Ratings</Text>
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.addToCartBtn}
-            onPress={() => addToCart(item)}
-          >
-            <Text style={styles.addToCartText}>Add to Cart</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buyNowBtn}
-            onPress={() => navigation.navigate('CheckoutScreen', { product: item })}
-          >
-            <Text style={styles.buyNowText}>Buy Now</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.card}>
+      <Image source={getImage(item.image)} style={styles.image} />
+      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.price}>₹{item.price}</Text>
+      <Text style={styles.rating}>⭐ {item.rating}</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Add to Cart</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
     <FlatList
-      data={products}
+      data={fashionItems}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
-      contentContainerStyle={styles.container}
+      keyExtractor={(item) => item.id}
+      numColumns={2}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
   card: {
-    flexDirection: 'row',
+    flex: 1,
     backgroundColor: '#fff',
-    borderRadius: 12,
+    margin: 8,
+    borderRadius: 10,
     padding: 10,
-    marginBottom: 12,
+    alignItems: 'center',
     elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   image: {
-    width: 90,
-    height: 90,
+    width: 120,
+    height: 120,
     resizeMode: 'contain',
-    borderRadius: 8,
-  },
-  details: {
-    flex: 1,
-    marginLeft: 12,
-    justifyContent: 'center',
   },
   name: {
-    fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 4,
-    color: '#000',
+    marginVertical: 5,
   },
   price: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: 'black', // Fashion-themed pink
-    marginBottom: 4,
+    color: '#000',
   },
   rating: {
-    fontSize: 13,
-    color: '#555',
-    marginBottom: 8,
+    color: '#888',
   },
-  buttonRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  addToCartBtn: {
+  button: {
     backgroundColor: '#000',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
+    padding: 6,
     borderRadius: 5,
+    marginTop: 5,
   },
-  addToCartText: {
+  buttonText: {
     color: '#fff',
-    fontWeight: 'bold',
-  },
-  buyNowBtn: {
-    borderWidth: 1,
-    borderColor: '#000',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 5,
-  },
-  buyNowText: {
-    color: '#000',
-    fontWeight: 'bold',
   },
 });
 
