@@ -31,6 +31,7 @@ import FashionScreen from '../components/fashion';
 import Pay from '../screens/PayScreen';
 import Brands from '../components/Brands';
 import SearchScreen from '../Bottom/SearchScreen';
+import FoodScreen from '../categoriedata/foodScreen';
 
 
 const Stack = createStackNavigator();
@@ -56,18 +57,15 @@ const Router = () => {
           <Stack.Screen name="ProductDetails" component={ProductDetails} />
           <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
           <Stack.Screen name="book" component={book} />
-          
           <Stack.Screen name="grocery" component={grocery} />
-         
           <Stack.Screen name="makeup" component={makeup} />
-         
           <Stack.Screen name="toy" component={toy} />
-          
           <Stack.Screen name="fashion" component={FashionScreen} />
           <Stack.Screen name="Pay" component={Pay} />
           <Stack.Screen name="brand" component={Brands} />
           <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen name="FoodScreen" component={FoodScreen} />
 
 
 

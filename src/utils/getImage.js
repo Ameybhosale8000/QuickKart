@@ -63,7 +63,17 @@ export const getImage = (imageName) => {
     'dress.jpg': require('../assets/dress.jpg'),
   
     'handbag.jpg': require('../assets/handbag.jpg'),
+    'food.png': require('../assets/food.jpg'),
+
+
+
+    'pizza.jpg': require('../assets/pizza.jpg'),
+    'pasta.jpg': require('../assets/pasta.jpg'),
+
+    'burger.jpg': require('../assets/burger.jpg'),
+    'paratha.jpg': require('../assets/paratha.jpg'),
+       'sandwich.jpg': require('../assets/sandwich.jpg'),
   };
 
-  return images[key] || null; // Return the matched image or null if not found
+  return images[key] || null; 
 };

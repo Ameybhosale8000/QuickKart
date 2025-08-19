@@ -17,13 +17,10 @@ const ITEM_WIDTH = (width / 2) - 24;
 // 🔄 Local image mapping
 const categoryImages = {
   "makeup.jpg": require('../assets/makeup.jpg'),
- 
   "toys.jpg": require('../assets/toys.jpg'),
   "grocery.jpg": require('../assets/grocery.jpg'),
- 
   "sports.jpg": require('../assets/sports.jpg'),
- 
-
+  "food.png": require('../assets/food.jpg'),   // 👈 food image mapping
   "electronic.jpg": require('../assets/electronic.jpg'),
   "electronics.jpg": require('../assets/electronics.jpeg'),
   "phone.jpg": require('../assets/phone.jpg'),
@@ -46,6 +43,9 @@ const screenMap = {
   "Mobiles": "MobileScreen",
   "fashion": "fashionn",
   "Home & Kitchen": "HomeKitchenScreen",
+
+  // ✅ FIX: Food screen mapping
+  "Food": "FoodScreen",
 };
 
 const CategoriesScreen = ({ navigation }) => {
