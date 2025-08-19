@@ -44,8 +44,9 @@ const screenMap = {
   "fashion": "fashionn",
   "Home & Kitchen": "HomeKitchenScreen",
 
-  // ✅ FIX: Food screen mapping
+ 
   "Food": "FoodScreen",
+    "Fashion": "fashionScreen",
 };
 
 const CategoriesScreen = ({ navigation }) => {

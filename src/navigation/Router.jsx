@@ -32,6 +32,7 @@ import Pay from '../screens/PayScreen';
 import Brands from '../components/Brands';
 import SearchScreen from '../Bottom/SearchScreen';
 import FoodScreen from '../categoriedata/foodScreen';
+import fashionScreen from '../categoriedata/fashionScreen';
 
 
 const Stack = createStackNavigator();
@@ -66,7 +67,7 @@ const Router = () => {
           <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           <Stack.Screen name="FoodScreen" component={FoodScreen} />
-
+          <Stack.Screen name="fashionScreen" component={fashionScreen} />
 
 
         </Stack.Navigator>

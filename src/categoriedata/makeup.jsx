@@ -9,10 +9,12 @@ import {
   Dimensions,
   ToastAndroid,
 } from 'react-native';
+
 import { database } from '../../firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 import { useCart } from '../../CartContext';
+import { getImage } from '../utils/getImage'; // ✅ Import local image mapper
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -22,12 +24,11 @@ const MakeupScreen = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    // Firebase path as per your DB structure
     const productsRef = ref(database, 'categories/cat1/-OXCUcA6KUtf5-Pr5Sgf/cat1');
+
     const unsubscribe = onValue(productsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Convert object to array with id keys
         const items = Object.keys(data).map(key => ({
           id: key,
           ...data[key],
@@ -41,45 +42,56 @@ const MakeupScreen = () => {
     return () => unsubscribe();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      style={styles.card}
-      onPress={() => navigation.navigate('ProductDetails', { product: item })}
-    >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <View style={styles.info}>
-        <View>
-          <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
-          <Text style={styles.price}>₹{item.price}</Text>
-          <Text style={styles.rating}>⭐ {item.rating || '4.5'} Ratings</Text>
-        </View>
+  const renderItem = ({ item }) => {
+    const imageSource = getImage(item.image);
 
-        <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.cartButton}
-            onPress={() => {
-              addToCart(item);
-              ToastAndroid.show(`${item.name} added to cart!`, ToastAndroid.SHORT);
-            }}
-          >
-            <Text style={styles.buttonTextWhite}>Add to Cart</Text>
-          </TouchableOpacity>
+    return (
+      <TouchableOpacity
+        activeOpacity={0.9}
+        style={styles.card}
+        onPress={() => navigation.navigate('ProductDetails', { product: item })}
+      >
+        {imageSource ? (
+          <Image
+            source={imageSource}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <View style={[styles.image, styles.imagePlaceholder]}>
+            <Text style={{ color: '#888' }}>No Image</Text>
+          </View>
+        )}
 
-          <TouchableOpacity
-            style={styles.buyButton}
-            onPress={() => navigation.navigate('CheckoutScreen', { product: item })}
-          >
-            <Text style={styles.buttonTextBlack}>Buy Now</Text>
-          </TouchableOpacity>
+        <View style={styles.info}>
+          <View>
+            <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
+            <Text style={styles.price}>₹{item.price}</Text>
+            <Text style={styles.rating}>⭐ {item.rating || '4.5'} Ratings</Text>
+          </View>
+
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              style={styles.cartButton}
+              onPress={() => {
+                addToCart(item);
+                ToastAndroid.show(`${item.name} added to cart!`, ToastAndroid.SHORT);
+              }}
+            >
+              <Text style={styles.buttonTextWhite}>Add to Cart</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buyButton}
+              onPress={() => navigation.navigate('CheckoutScreen', { product: item })}
+            >
+              <Text style={styles.buttonTextBlack}>Buy Now</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <FlatList
@@ -115,6 +127,11 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 8,
     backgroundColor: '#f9f9f9',
+  },
+  imagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
   },
   info: {
     flex: 1,

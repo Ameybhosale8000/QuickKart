@@ -14,6 +14,7 @@ import { database } from '../../firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 import { useCart } from '../../CartContext';
+import { getImage } from '../utils/getImage'; // ✅ Correct named import
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -23,7 +24,6 @@ const ToysScreen = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    // Toys data fetch from Firebase
     const productsRef = ref(database, 'categories/cat11/-OXNzH24HU-lfocYfAN0/toys');
     const unsubscribe = onValue(productsRef, (snapshot) => {
       const data = snapshot.val();
@@ -47,11 +47,19 @@ const ToysScreen = () => {
       style={styles.card}
       onPress={() => navigation.navigate('ProductDetails', { product: item })}
     >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.image}
-        resizeMode="contain"
-      />
+      {/* ✅ Local image using getImage */}
+      {getImage(item.image) ? (
+        <Image
+          source={getImage(item.image)}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      ) : (
+        <View style={[styles.image, styles.imagePlaceholder]}>
+          <Text style={{ color: '#888' }}>No Image</Text>
+        </View>
+      )}
+
       <View style={styles.info}>
         <View>
           <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
@@ -115,6 +123,11 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 8,
     backgroundColor: '#f9f9f9',
+  },
+  imagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
   },
   info: {
     flex: 1,

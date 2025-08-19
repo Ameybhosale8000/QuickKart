@@ -73,6 +73,31 @@ export const getImage = (imageName) => {
     'burger.jpg': require('../assets/burger.jpg'),
     'paratha.jpg': require('../assets/paratha.jpg'),
        'sandwich.jpg': require('../assets/sandwich.jpg'),
+
+         'puzzle.jpg': require('../assets/puzzle.jpg'),
+    'block.jpg': require('../assets/block.jpg'),
+       'teddy.jpg': require('../assets/teddy.jpg'),
+
+        'action.jpg': require('../assets/action.jpg'),
+       'rc.jpg': require('../assets/rc.jpg'),
+       
+
+         'f1.jpg': require('../assets/f1.jpg'),
+       'f2.jpg': require('../assets/f2.jpg'),
+
+         'elf.jpg': require('../assets/elf.jpg'),
+       'eyeliner.jpg': require('../assets/eyeliner.jpg'),
+
+         'fw.jpg': require('../assets/fw.jpg'),
+       'lipsstick.jpg': require('../assets/lipsstick.jpg'),
+
+        'pant.jpg': require('../assets/pant.jpg'),
+       'tshirt.jpg': require('../assets/tshirt.jpg'),
+        'shoe.jpg': require('../assets/shoe.jpg'),
+   
+
+       
+       
   };
 
   return images[key] || null; 
